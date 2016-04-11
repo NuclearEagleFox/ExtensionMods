@@ -25,7 +25,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 """
-#test
 import inkex, simplestyle, simplepath
 import cubicsuperpath, simpletransform, bezmisc
 
@@ -1930,6 +1929,7 @@ def biarc_curve_clip_at_l(curve, l, clip_type = "strict") :
 class Polygon:
     def __init__(self, polygon=None):
         self.polygon = [] if polygon==None else polygon[:]
+
 
 
     def move(self, x, y) :
