@@ -146,7 +146,7 @@ class GcodeExport(inkex.Effect):
 			
 			pos_file_png_exported = os.path.join(self.options.directory,self.options.filename+".png") 
 			pos_file_png_BW = os.path.join(self.options.directory,self.options.filename+suffix+"preview.png") 
-			pos_file_gcode = os.path.join(self.options.directory,self.options.filename+suffix+"gcode.txt") 
+			pos_file_gcode = os.path.join(self.options.directory,self.options.filename+suffix+".gcode") 
 			
 
 			#Esporto l'immagine in PNG
@@ -490,23 +490,23 @@ class GcodeExport(inkex.Effect):
 							if matrice_BN[y][x] != B :
 								if Laser_ON == False :
 									file_gcode.write('G00 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) +'\n')
-									file_gcode.write(self.options.laseron + ' '+ ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x]) / 255.0) +'\n')
+									file_gcode.write(self.options.laseron + ' ' + ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x]) / 255.0) +'\n')
 									Laser_ON = True
 									
 								if  Laser_ON == True :   #DEVO evitare di uscire dalla matrice
 									if x == w-1 : #controllo fine riga
-										file_gcode.write('G01 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) +' F' + str(F_G01) + '\n')
+										file_gcode.write('G01 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) + ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x]) / 255.0) + '\n')
 										file_gcode.write(self.options.laseroff + '\n')
 										Laser_ON = False
 										
 									else: 
 										if matrice_BN[y][x+1] == B :
-											file_gcode.write('G01 X' + str(float(x+1)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) +'\n')
+											file_gcode.write('G01 X' + str(float(x+1)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) + ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x]) / 255.0) + '\n')
 											file_gcode.write(self.options.laseroff + '\n')
 											Laser_ON = False
 											
 										elif matrice_BN[y][x] != matrice_BN[y][x+1] :
-											file_gcode.write('G01 X' + str(float(x+1)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) +'\n')
+											file_gcode.write('G01 X' + str(float(x+1)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) + ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x]) / 255.0) + '\n')
 											file_gcode.write(self.options.laseron + ' '+ ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x+1]) / 255.0) +'\n')												
 
 					
@@ -520,18 +520,18 @@ class GcodeExport(inkex.Effect):
 									
 								if  Laser_ON == True :   #DEVO evitare di uscire dalla matrice
 									if x == 0 : #controllo fine riga ritorno
-										file_gcode.write('G01 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) +' F' + str(F_G01) + '\n')
+										file_gcode.write('G01 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) + ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x]) / 255.0) + '\n')
 										file_gcode.write(self.options.laseroff + '\n')
 										Laser_ON = False
 										
 									else: 
 										if matrice_BN[y][x-1] == B :
-											file_gcode.write('G01 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) +'\n')
+											file_gcode.write('G01 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) + ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x]) / 255.0) + '\n')
 											file_gcode.write(self.options.laseroff + '\n')
 											Laser_ON = False
 											
 										elif  matrice_BN[y][x] != matrice_BN[y][x-1] :
-											file_gcode.write('G01 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) +'\n')
+											file_gcode.write('G01 X' + str(float(x)/Scala) + ' Y' + str(float(y)/Scala) + ' F' + str(F_G01) + ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x]) / 255.0) + '\n')
 											file_gcode.write(self.options.laseron + ' '+ ' S' + "{0:.4f}".format((255.0 - matrice_BN[y][x-1]) / 255.0) +'\n')
 
 			

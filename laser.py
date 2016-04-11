@@ -2658,7 +2658,7 @@ class laser_gcode(inkex.Effect):
                 lg = 'G00'
             elif s[1] == 'line':
                 if lg=="G00": g += "G0 " + feed + "\n"
-                g += "G1" + c(si[0]) + "\n"
+                g += "G1" + c(si[0]) + " S" + str(self.options.laser_power / 100.0) + "\n"
                 lg = 'G01'
             elif s[1] == 'arc':
                 r = [(s[2][0]-s[0][0]), (s[2][1]-s[0][1])]
@@ -2666,10 +2666,10 @@ class laser_gcode(inkex.Effect):
                 if (r[0]**2 + r[1]**2)>.1:
                     r1, r2 = (P(s[0])-P(s[2])), (P(si[0])-P(s[2]))
                     if abs(r1.mag()-r2.mag()) < 0.001 :
-                        g += ("G2" if s[3]<0 else "G3") + c(si[0]+[ None, (s[2][0]-s[0][0]),(s[2][1]-s[0][1])  ]) + "\n"
+                        g += ("G2" if s[3]<0 else "G3") + c(si[0]+[ None, (s[2][0]-s[0][0]),(s[2][1]-s[0][1])  ]) + " S" + str(self.options.laser_power / 100.0) + "\n"
                     else:
                         r = (r1.mag()+r2.mag())/2
-                        g += ("G2" if s[3]<0 else "G3") + c(si[0]) + " R%f" % (r) + "\n"
+                        g += ("G2" if s[3]<0 else "G3") + c(si[0]) + " R%f" % (r) + " S" + str(self.options.laser_power / 100.0) + "\n"
                     lg = 'G02'
                 else:
                     g += "G0" +c(si[0]) + feed + "\n"
@@ -3162,8 +3162,8 @@ class laser_gcode(inkex.Effect):
             "id": "Laser Engraver",
             "penetration feed": self.options.laser_speed,
             "feed": self.options.laser_speed,
-            "gcode before path": ("G4 P0 \n" + self.options.laser_command + " S" + str( (self.options.laser_power / 100  ) + "\nG4 P" + self.options.power_delay),
-            "gcode after path": ("G4 P0 \n" + self.options.laser_off_command + " S0" + "\n" + "G0 F" + self.options.travel_speed),
+            "gcode before path": ("G4 P0 \n" + self.options.laser_command + " S" + str( str(self.options.laser_power / 100) + "\nG4 P" + self.options.power_delay)),
+            "gcode after path": ("G4 P0 \n" + self.options.laser_off_command + " S0" + "\n" + "G0 F" + self.options.travel_speed)
         }
 
         self.get_info()
